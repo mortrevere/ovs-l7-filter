@@ -40,24 +40,24 @@ These files are in the `pat_files` folder. The format is very simple (simple reg
 
 ## Performances
 
-Tests are using `iperf`.
+Tests are using `iperf` with a TCP_WINDOW_SIZE of 2kb and are best-of three. The switch is OVS 2.5.0 inside a mininet VM with 2 vCPU.
 
-- Normal mode: (*to fix* : sould not be that slow)
+- Normal mode: 
 ```
-[  3]  0.0-10.3 sec  16.2 MBytes  13.3 Mbits/sec
+[  3]  0.0-10.0 sec  68.5 MBytes  57.4 Mbits/sec
 ```
 
 - Fast mode :
 ```
-[  3]  0.0-10.0 sec   421 MBytes   352 Mbits/sec
+[  3]  0.0-10.0 sec   432 MBytes   363 Mbits/sec
 ```
 
 - Super fast mode :
 ```
-[  3]  0.0-10.0 sec  38.3 GBytes  32.9 Gbits/sec
+[  3]  0.0-10.0 sec   526 MBytes   440 Mbits/sec
 ```
 
-> Please note that **super fast mode** is not as safe as the other options : it allows hole-poking into the firewall. By initiating a valid connection on a given port, you could then pass any application protocol through that port. Timeouts mitigates this, and it should be safe in most common cases.
+> Please note that **super fast mode** is not as safe as the other options : it allows hole-poking into the firewall. By initiating a valid connection on a given port, you could then pass any application protocol through that port. Timeouts mitigates this, and it should be safe only in most common cases.
 
 - Simple switch for reference : 
 ```
