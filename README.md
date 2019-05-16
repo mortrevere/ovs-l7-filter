@@ -1,4 +1,3 @@
-
 # ovs-l7-filter
 
 This is an OpenFlow controller, built using [Ryu](https://osrg.github.io/ryu/). It works with [Open vSwitch](https://www.openvswitch.org/) but should work with any switch supporting OpenFlow 1.3.
@@ -9,7 +8,9 @@ This controller implements layer 7 (application) filtering on any switch that re
 
 Block *any application* protocol on *any port*, like OpenVPN, SSH, HTTP, FTP ... at a switching level (no L3 routing)
 
-> Very specific use-case : block certain types of file passing through any FTP connection. *Currently included* : exe, flash, gif, html, jpeg, mp3, ogg, pdf, perl, png, postscript, rar, rpm, rtf, tar, zip. See the `file_*.pat` files.
+> Very specific use-case : block certain types of file passing through any FTP connection.
+>
+> *Currently included* : exe, flash, gif, html, jpeg, mp3, ogg, pdf, perl, png, postscript, rar, rpm, rtf, tar, zip. See the `file_*.pat` files.
 
 ## Usage
 
@@ -54,6 +55,10 @@ Tests are using `iperf` with a TCP_WINDOW_SIZE of 2kb and are best-of three. The
 ```
 [  3]  0.0-10.0 sec   432 MBytes   363 Mbits/sec
 ```
+
+> The difference between normal and fast mode is that the controller waits for the first packet with a payload to actually decide to open a flow on the switch. Previous traffic without payload (mostly handshakes for TCP) is forwarded through the controller, adding some overhead. 
+
+> In both mode, every packet is still forwarded to the controller even after a flow was opened for it. This way we can continue to analyze traffic and block it if a protocol is detected later.
 
 - Super fast mode :
 ```
