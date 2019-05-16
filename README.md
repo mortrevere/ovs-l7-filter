@@ -1,3 +1,4 @@
+
 # ovs-l7-filter
 
 This is an OpenFlow controller, built using [Ryu](https://osrg.github.io/ryu/). It works with [Open vSwitch](https://www.openvswitch.org/) but should work with any switch supporting OpenFlow 1.3.
@@ -7,6 +8,8 @@ This controller implements layer 7 (application) filtering on any switch that re
 ## Use case
 
 Block *any application* protocol on *any port*, like OpenVPN, SSH, HTTP, FTP ... at a switching level (no L3 routing)
+
+> Very specific use-case : block certain types of file passing through any FTP connection. *Currently included* : exe, flash, gif, html, jpeg, mp3, ogg, pdf, perl, png, postscript, rar, rpm, rtf, tar, zip. See the `file_*.pat` files.
 
 ## Usage
 
