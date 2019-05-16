@@ -46,7 +46,7 @@ class FirewallSwitch(app_manager.RyuApp):
         self.flux = {}
 
         #TODO : move to config (REST, yaml ?)
-        self.fastMode = True
+        self.fastMode = False
         self.filtered_ports = ['all']
         self.blocked_ports = []
         self.unfiltered_ports = [22]
@@ -57,7 +57,9 @@ class FirewallSwitch(app_manager.RyuApp):
         self.pktAE.lookFor('png')
         self.pktAE.lookFor('ssh')
 
+        if SUPER_FAST_MODE: self.fastMode = False
         if self.fastMode: print('WARNING : fastMode is on, some packets may pass through')
+
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_features_handler(self, ev):
@@ -237,7 +239,6 @@ class FirewallSwitch(app_manager.RyuApp):
         if msg.buffer_id == ofproto.OFP_NO_BUFFER:
             data = msg.data
 
-        #print("out >>" , hasData, dest_tcp_port, protocols, pktdata if hasData else 'none')
         out = parser.OFPPacketOut(datapath=datapath, buffer_id=msg.buffer_id, in_port=in_port, actions=actions, data=data)
         datapath.send_msg(out)
 
