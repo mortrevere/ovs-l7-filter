@@ -14,6 +14,7 @@ import hashlib
 
 MISS_SEND_LENGTH = 200
 BLOCK_IDLE_TIMEOUT = 30
+SUPER_FAST_MODE = False
 
 class FirewallSwitch(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
@@ -67,8 +68,8 @@ class FirewallSwitch(app_manager.RyuApp):
         self.delete_flow(datapath, ofproto.OFPTT_ALL, parser.OFPMatch()) #delete all current flows
         #base rule is push to controller and resubmit to table 2
         actions = [parser.OFPActionOutput(ofproto.OFPP_CONTROLLER,ofproto.OFPCML_NO_BUFFER)]
-        inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,actions),
-                parser.OFPInstructionGotoTable(table_id=2)]
+        inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,actions)]
+        if not SUPER_FAST_MODE: inst += [parser.OFPInstructionGotoTable(table_id=2)]
 
         mod = parser.OFPFlowMod(datapath=datapath, priority=0, match=parser.OFPMatch(), instructions=inst, table_id=0)
         datapath.send_msg(mod)
@@ -93,6 +94,8 @@ class FirewallSwitch(app_manager.RyuApp):
     def add_flow(self, datapath, priority, match, actions, buffer_id=None, table_id = 2, idle_timeout=60):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
+
+        if SUPER_FAST_MODE and table_id == 2: table_id = 0
 
         if not actions: #drop
             inst = [parser.OFPInstructionActions(ofproto.OFPIT_CLEAR_ACTIONS, [])]
