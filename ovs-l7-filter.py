@@ -14,7 +14,7 @@ import hashlib
 
 MISS_SEND_LENGTH = 200
 BLOCK_IDLE_TIMEOUT = 30
-SUPER_FAST_MODE = False
+SUPER_FAST_MODE = True
 
 class FirewallSwitch(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
@@ -46,18 +46,18 @@ class FirewallSwitch(app_manager.RyuApp):
         self.flux = {}
 
         #TODO : move to config (REST, yaml ?)
-        self.fastMode = False
+        self.fastMode = True
         self.filtered_ports = ['all']
         self.blocked_ports = []
         self.unfiltered_ports = [22]
 
         self.pktAE = pktAnalyticsEngine();
-        self.pktAE.lookFor('http')
-        #pktAE.lookFor('ftp')
-        self.pktAE.lookFor('png')
-        self.pktAE.lookFor('ssh')
+        #self.pktAE.lookFor('http')
+        self.pktAE.lookFor('ftp')
+        self.pktAE.lookFor('rar')
+        #self.pktAE.lookFor('ssh')
 
-        if SUPER_FAST_MODE: self.fastMode = False
+        #if SUPER_FAST_MODE: self.fastMode = False
         if self.fastMode: print('WARNING : fastMode is on, some packets may pass through')
 
 
