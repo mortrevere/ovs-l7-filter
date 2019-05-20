@@ -23,6 +23,9 @@ class pktAnalyticsEngine:
     def info(self, text):
         print('[pktAE] ' + text)
 
+    def availableProtocols(self):
+        return list(self.all_protocols.keys())
+
     def lookFor(self, protocol):
         if isinstance(protocol, list):
             for p in protocol:
