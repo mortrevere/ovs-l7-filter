@@ -46,7 +46,7 @@ class FirewallSwitch(app_manager.RyuApp):
         self.flux = {}
 
         #TODO : move to config (REST, yaml ?)
-        self.fastMode = False
+        self.fastMode = True
         self.filtered_ports = ['all']
         self.blocked_ports = []
         self.unfiltered_ports = [22]
