@@ -53,11 +53,11 @@ class FirewallSwitch(app_manager.RyuApp):
 
         self.pktAE = pktAnalyticsEngine();
         self.pktAE.lookFor('http')
-        #pktAE.lookFor('ftp')
-        self.pktAE.lookFor('png')
+        self.pktAE.lookFor('ftp')
+        self.pktAE.lookFor('rar')
         self.pktAE.lookFor('ssh')
 
-        if SUPER_FAST_MODE: self.fastMode = False
+        #if SUPER_FAST_MODE: self.fastMode = False
         if self.fastMode: print('WARNING : fastMode is on, some packets may pass through')
 
 
